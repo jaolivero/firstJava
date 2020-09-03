@@ -1,15 +1,12 @@
 package com.codeWithJoel;
 
 public class MortgageCalculator {
-    public final static byte MONTHS_IN_YEAR = 12;
-    public final static byte PERCENT = 100;
+    private final static byte MONTHS_IN_YEAR = 12;
+    private final static byte PERCENT = 100;
 
     private int principal;
     private float annualInterest;
     private byte years;
-
-    public MortgageCalculator(float annualInterest) {
-    }
 
     public MortgageCalculator(int principal, float annualInterest, byte years) {
         this.principal = principal;
@@ -18,9 +15,8 @@ public class MortgageCalculator {
     }
 
     public double calculateBalance(short numberOfPaymentMade) {
-
-        float monthlyInterest = annualInterest / PERCENT / MONTHS_IN_YEAR;
-        short numberOfPayments = (short) (years * MONTHS_IN_YEAR);
+        float monthlyInterest = getMonthlyInterest();
+        short numberOfPayments = getNumberOfPayments();
 
         double balance = principal * (Math.pow(1 + monthlyInterest, numberOfPayments) - Math.pow(1 + monthlyInterest, numberOfPaymentMade))
                 / (Math.pow(1 + monthlyInterest, numberOfPayments) - 1);
@@ -28,9 +24,10 @@ public class MortgageCalculator {
         return balance;
     }
 
+
     public double calculateMortgage() {
-        float monthlyInterest = annualInterest / PERCENT / MONTHS_IN_YEAR;
-        short numberOfPayments = (short) (years * MONTHS_IN_YEAR);
+        float monthlyInterest = getMonthlyInterest();
+        short numberOfPayments = getNumberOfPayments();
 
         double mortgage = principal * (monthlyInterest * Math.pow(1 + monthlyInterest, numberOfPayments)
                 / (Math.pow(1 + monthlyInterest, numberOfPayments) - 1));
@@ -38,7 +35,18 @@ public class MortgageCalculator {
         return mortgage;
     }
 
-    public short getYears() {
-        return years;
+    public double [] getRemainingBalance() {
+        double[] balances = new double[getNumberOfPayments()];
+        for (short month = 1; month <= years * balances.length; month++)
+            balances[month -1] = calculateBalance(month);
+        return balances;
+    }
+
+    private float getMonthlyInterest() {
+        return annualInterest / PERCENT / MONTHS_IN_YEAR;
+    }
+
+    private short getNumberOfPayments() {
+        return (short) (years * MONTHS_IN_YEAR);
     }
 }
