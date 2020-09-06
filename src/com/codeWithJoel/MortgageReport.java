@@ -9,6 +9,7 @@ public class MortgageReport {
 
     public MortgageReport(MortgageCalculator calculator) {
         this.calculator = calculator;
+        currency = null;
     }
 
     public void printPaymentSchedule() {
